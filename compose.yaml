@@ -1,0 +1,6 @@
+﻿services:
+  domain:
+    image: domain
+    build:
+      context: .
+      dockerfile: Domain/Dockerfile
