@@ -11,7 +11,7 @@ namespace Application.UseCases;
 
 public class ItemUseCase(IItemRepository itemRepository,IUnitOfWork unitOfWork): IItemUseCase
 {
-    public async Task<Result> Create(CrateItemCommand item)
+    public async Task<Result> Create(CreateItemCommand item)
     {
         using (unitOfWork)
         {

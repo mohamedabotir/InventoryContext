@@ -6,5 +6,5 @@ namespace Application.UseCases;
 
 public interface IItemUseCase
 {
-    Task<Result> Create(CrateItemCommand item);
+    Task<Result> Create(CreateItemCommand item);
 }

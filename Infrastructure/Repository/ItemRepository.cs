@@ -1,12 +1,13 @@
 using System.Linq.Expressions;
 using Domain.Entities;
 using Domain.Repository;
+using Infrastructure.Context;
 using Infrastructure.Context.Pocos;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repository;
 
-public class ItemRepository(DbContext context):IItemRepository
+public class ItemRepository(ItemContext context):IItemRepository
 {
     public Task<Item> GetByIdAsync(Guid id)
     {

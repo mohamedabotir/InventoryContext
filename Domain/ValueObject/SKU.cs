@@ -1,3 +1,4 @@
+using Common.Result;
 using Common.Utils;
 
 namespace Domain.ValueObject;
@@ -20,6 +21,15 @@ public sealed class SKU : Common.ValueObject.ValueObject<SKU>
         var skuNumber = NumberGeneratorBase.CreateGenerator(NumberGenerator.Sku)
             .GenerateNumber();
       return  new SKU(skuNumber);
+    }
+
+    public static Result<SKU> IsValidSku(Maybe<string> sku)
+    {
+        var result = sku.ToResult("SKU cannot be null or empty.")
+            .Ensure(e=> NumberGeneratorBase.CreateGenerator(NumberGenerator.Sku).IsValidNumber(e),"Invalid sku.")
+            .Map(e=>new SKU(e));
+
+        return result;
     }
 
     protected override int GetHashCodeCore()

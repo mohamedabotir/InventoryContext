@@ -19,7 +19,7 @@ public sealed class Name: Common.ValueObject.ValueObject<SKU>
     {
        return name.ToResult("Name Should Not Be Null")
             .Ensure(e=>e.Length>10,"Name Must be at least 10 characters")
-            .Ensure(e=>e.Length>126,"Name must be at most 126 characters")
+            .Ensure(e=>e.Length<126,"Name must be at most 126 characters")
             .Map(e=>new Name(e));
     }
 

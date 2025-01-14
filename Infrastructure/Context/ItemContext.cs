@@ -1,3 +1,4 @@
+using Domain.Entities;
 using Infrastructure.Context.Pocos;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,4 +11,6 @@ public class ItemContext: DbContext
         
     }
     public DbSet<ItemPoco> Items { get; set; }
+    public DbSet<StockPoco> Stocks { get; set; }
+
 }
