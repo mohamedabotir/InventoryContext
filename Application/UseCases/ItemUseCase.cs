@@ -25,7 +25,7 @@ public class ItemUseCase(IItemRepository itemRepository,IUnitOfWork unitOfWork):
             {
                 return Result.Fail(result.Message);
             }
-            var createdItem = new Item(name.Value, description.Value, price.Value, sku,stocks);
+            var createdItem = new Item(item.Guid,DateTime.UtcNow,null,0,name.Value, description.Value, price.Value, sku,stocks);
            await itemRepository.AddAsync(createdItem);
            await unitOfWork.SaveChangesAsync(createdItem.DomainEvents);
             return Result.Ok();
@@ -35,6 +35,6 @@ public class ItemUseCase(IItemRepository itemRepository,IUnitOfWork unitOfWork):
     private Stock MapItemStockDtoToStock(ItemStockDto value)
     {
         
-        return new Stock(value.Id,0,value.Quantity,value.Location);
+        return new Stock(0,value.Id,0,value.Quantity,value.Location);
     }
 }

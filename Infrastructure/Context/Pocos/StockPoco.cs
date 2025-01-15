@@ -29,6 +29,6 @@ public class StockPoco
         ItemId = stock.ItemId;
         return this;
     }
-    public Stock MapStockPocoToStock(StockPoco stock)=>new Stock(stock.Guid,stock.ItemId,new Quantity(stock.Quantity,QuantityType), stock.Location);
+    public Stock MapStockPocoToStock(StockPoco stock)=>new Stock(stock.Id,stock.Guid,stock.ItemId,new Quantity(stock.Quantity,QuantityType), stock.Location);
     
 }

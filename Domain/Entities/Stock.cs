@@ -5,12 +5,13 @@ namespace Domain.Entities;
 
 public class Stock  :Entity
 {
-    public Stock(Guid guid, int itemId, Quantity quantity, string location)
+    public Stock(int id,Guid guid, int itemId, Quantity quantity, string location)
     {
         Guid = guid;
         ItemId = itemId;
         Quantity = quantity;
         Location = location;
+        Id = id;
     }
 
     public Guid Guid { get;protected set; }

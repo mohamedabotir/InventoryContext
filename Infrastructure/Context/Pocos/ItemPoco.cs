@@ -58,7 +58,7 @@ public class ItemPoco
         {
             return  Result.Fail<Item>(result.Message);
         }
-        var createdItem = new Item(name.Value, description.Value, price.Value, sku.Value,stocks);
+        var createdItem = new Item(item.Guid,item.CreatedOn,item.LastModification,item.Id,name.Value, description.Value, price.Value, sku.Value,stocks);
       
         return  Result.Ok(createdItem);;
     }
