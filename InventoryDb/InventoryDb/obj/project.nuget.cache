@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "mdR/w9OY1tae1IKA1+t1eU7hHpcBGC0nQscVLYpeWj9QjyDZFn6kXBr40dnKrPfca1Clbsy4sJkAZAk2qyYhnA==",
+  "success": true,
+  "projectFilePath": "/home/threading/DistributedSystem Assisment/InventoryContext/InventoryDb/InventoryDb/InventoryDb.sqlproj",
+  "expectedPackageFiles": [
+    "/home/threading/.nuget/packages/microsoft.netframework.referenceassemblies/1.0.0/microsoft.netframework.referenceassemblies.1.0.0.nupkg.sha512",
+    "/home/threading/.nuget/packages/microsoft.netframework.referenceassemblies.net46/1.0.0/microsoft.netframework.referenceassemblies.net46.1.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

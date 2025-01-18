@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build">
+  <Sdk Name="Microsoft.Build.Sql" Version="0.2.0-preview" />
+  <PropertyGroup>
+    <Name>InventoryDb</Name>
+    <ProjectGuid>{CB4F11D6-3C4F-4B60-8913-7CD0D43C8BBA}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
+    <ModelCollation>1033, CI</ModelCollation>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="PreDeployment" />
+    <Folder Include="Tables" />
+  </ItemGroup>
+  <ItemGroup>
+    <PreDeploy Include="PreDeployment\1-Script.PreDeployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="InventoryDb_1.publish.xml" />
+  </ItemGroup>
+  <Target Name="BeforeBuild">
+    <Delete Files="$(BaseIntermediateOutputPath)\project.assets.json" />
+  </Target>
+</Project>
