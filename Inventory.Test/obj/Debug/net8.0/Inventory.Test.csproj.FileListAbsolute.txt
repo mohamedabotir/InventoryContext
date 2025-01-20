@@ -96,3 +96,4 @@
 /home/threading/DistributedSystem Assisment/InventoryContext/Inventory.Test/obj/Debug/net8.0/Inventory.Test.pdb
 /home/threading/DistributedSystem Assisment/InventoryContext/Inventory.Test/obj/Debug/net8.0/Inventory.Test.genruntimeconfig.cache
 /home/threading/DistributedSystem Assisment/InventoryContext/Inventory.Test/obj/Debug/net8.0/ref/Inventory.Test.dll
+/home/threading/DistributedSystem Assisment/InventoryContext/Inventory.Test/obj/Debug/net8.0/Inventory.Test.sourcelink.json

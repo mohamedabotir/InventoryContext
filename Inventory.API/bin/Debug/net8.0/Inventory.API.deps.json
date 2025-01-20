@@ -1567,6 +1567,7 @@
       },
       "Application/1.0.0": {
         "dependencies": {
+          "Common": "1.0.0",
           "Domain": "1.0.0",
           "MediatR": "11.1.0"
         },

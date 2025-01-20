@@ -27,7 +27,7 @@ using MongoDB.Bson.Serialization.Serializers;
 using EventHandler = Infrastructure.Consumer.EventHandler;
 
 var builder = WebApplication.CreateBuilder(args);
-Action<DbContextOptionsBuilder> dbContextConfiguration = (e => e.UseSqlServer(builder.Configuration.GetConnectionString("ItemContext")));
+Action<DbContextOptionsBuilder> dbContextConfiguration = (e => e.UseSqlServer(builder.Configuration.GetConnectionString("Inventory")));
 builder.Services.AddDbContext<ItemContext>(dbContextConfiguration);
 builder.Services.AddSingleton(new ItemContextFactory(dbContextConfiguration));
 

@@ -2336,6 +2336,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
+          "Common": "1.0.0",
           "Domain": "1.0.0",
           "MediatR": "11.1.0"
         },
@@ -6188,8 +6189,8 @@
     },
     "Common/1.0.0": {
       "type": "project",
-      "path": "../../POContext/Common/Common.csproj",
-      "msbuildProject": "../../POContext/Common/Common.csproj"
+      "path": "../Common/Common.csproj",
+      "msbuildProject": "../Common/Common.csproj"
     },
     "Domain/1.0.0": {
       "type": "project",

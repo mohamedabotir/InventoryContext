@@ -1,20 +1,19 @@
--- Populate the Item table with 300 records
 DECLARE @Counter INT = 1;
 
-WHILE @Counter <= 300
+WHILE @Counter <= 100
 BEGIN
     INSERT INTO Item (Guid, Name, Description, Price, SKU, CreatedOn, LastModification)
     VALUES (
         NEWID(), 
-        CONCAT('Item-', @Counter), 
-        CONCAT('Description for Item-', @Counter), 
+        CONCAT('Item-', @Counter, REPLICATE('X', 10)), 
+        CONCAT('Description for Item-', @Counter, ' ', REPLICATE('X', 30)), 
         CAST(RAND() * 1000 + 1 AS DECIMAL(18, 2)), 
         CONCAT('SKU-', 
                SUBSTRING(CONVERT(VARCHAR(36), NEWID()), 1, 3), '-', 
                SUBSTRING(CONVERT(VARCHAR(36), NEWID()), 1, 3), '-', 
                SUBSTRING(CONVERT(VARCHAR(36), NEWID()), 1, 3)), 
         GETDATE(), 
-        NULL 
+        NULL
     );
     SET @Counter = @Counter + 1;
 END;
