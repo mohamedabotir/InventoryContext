@@ -1,4 +1,4 @@
-DECLARE @Counter INT = 1;
+﻿DECLARE @Counter INT = 1;
 
 WHILE @Counter <= 100
 BEGIN

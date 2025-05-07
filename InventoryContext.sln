@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastru
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.API", "Inventory.API\Inventory.API.csproj", "{DEF7C48B-61FE-4447-AB0D-E259B5DD6857}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Inventory.Database", "Inventory.Database\Inventory.Database.sqlproj", "{3923E867-7612-4A30-A0B9-DA88C1D19540}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,6 +50,12 @@ Global
 		{DEF7C48B-61FE-4447-AB0D-E259B5DD6857}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DEF7C48B-61FE-4447-AB0D-E259B5DD6857}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DEF7C48B-61FE-4447-AB0D-E259B5DD6857}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3923E867-7612-4A30-A0B9-DA88C1D19540}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3923E867-7612-4A30-A0B9-DA88C1D19540}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3923E867-7612-4A30-A0B9-DA88C1D19540}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{3923E867-7612-4A30-A0B9-DA88C1D19540}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3923E867-7612-4A30-A0B9-DA88C1D19540}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3923E867-7612-4A30-A0B9-DA88C1D19540}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,5 +66,9 @@ Global
 		{761F0676-C5F1-4CC1-AA5E-14F5C314D6AD} = {CE46426D-2B81-479B-87F1-356E6FABB9EA}
 		{787C963B-75C4-4138-9EA0-4B7896F4BDA1} = {CE46426D-2B81-479B-87F1-356E6FABB9EA}
 		{DEF7C48B-61FE-4447-AB0D-E259B5DD6857} = {CE46426D-2B81-479B-87F1-356E6FABB9EA}
+		{3923E867-7612-4A30-A0B9-DA88C1D19540} = {CE46426D-2B81-479B-87F1-356E6FABB9EA}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4401AB02-4F80-4B42-ADFE-3FFAB257D098}
 	EndGlobalSection
 EndGlobal
