@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Common.Events;
 using Confluent.Kafka;
+using Domain.Events;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 

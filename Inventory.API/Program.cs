@@ -7,10 +7,12 @@ using Common.Repository;
 using Common.Result;
 using Confluent.Kafka;
 using Domain.Entities;
+using Domain.Events;
 using Domain.Repository;
 using GraphQL;
 using GraphQL.Server.Ui.Playground;
 using GraphQL.Types;
+using Infrastructure.Configs;
 using Infrastructure.Consumer;
 using Infrastructure.Context;
 using Infrastructure.MessageBroker;
@@ -35,7 +37,9 @@ builder.Services.AddSingleton(new ItemContextFactory(dbContextConfiguration));
 builder.Services.Configure<ConsumerConfig>(builder.Configuration.GetSection("ConsumerConfig"));
 builder.Services.Configure<InventoryTopic>(builder.Configuration.GetSection("Topic"));
 builder.Services.Configure<ProducerConfig>(builder.Configuration.GetSection("ProducerConfig"));
+builder.Services.Configure<ElkLog>(builder.Configuration.GetSection("ElkLog"));
 builder.Services.Configure<InventoryMongoConfig>(builder.Configuration.GetSection("MongoConfig"));
+SerilogConfigurator.Configure(builder.Configuration);
 
 
 BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
@@ -57,7 +61,7 @@ builder.Services.AddGraphQL(b => b
     .AddAutoSchema<ItemQuery>()  
     .AddSystemTextJson()
     .AddDataLoader());
-builder.Services.AddScoped<Application.Handlers.IEventHandler,EventHandler>();
+builder.Services.AddScoped<IEventHandler,EventHandler>();
 builder.Services.AddScoped<IEventConsumer<EventConsumer>, EventConsumer>();
 builder.Services.AddScoped<IRequestHandler<CreateItemCommand, Result>, CreateItemHandler>();
 builder.Services.AddScoped<IProducer,Producer>();

@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Context;
 
-public class UnitOfWork(ItemContext dbContext, IServiceProvider serviceProvider,IHttpContextAccessor httpContextAccessor, IEventSourcing<Item> eventSourcing) : IUnitOfWork<Item>
+public class UnitOfWork(ItemContext dbContext, IServiceProvider serviceProvider,IHttpContextAccessor httpContextAccessor) : IUnitOfWork<Item>
 {
     public async Task<int> SaveChangesAsync(Item aggregate, CancellationToken cancellationToken = default)
     {
@@ -22,7 +22,7 @@ public class UnitOfWork(ItemContext dbContext, IServiceProvider serviceProvider,
             correlationId = httpContextAccessor.HttpContext!.GetCorrelationId();
             var result = await dbContext.SaveChangesAsync(cancellationToken);
 
-            await eventSourcing.SaveAsync(aggregate);
+           // await eventSourcing.SaveAsync(aggregate);
 
             await transaction.CommitAsync(cancellationToken);
 
