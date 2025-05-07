@@ -17,4 +17,10 @@
       <PackageReference Include="MongoDB.Driver" Version="3.1.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="Common">
+        <HintPath>..\Deps\Common.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>
