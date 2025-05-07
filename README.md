@@ -1,5 +1,9 @@
 # Inventory Service
-
+![GitHub repo size](https://img.shields.io/github/repo-size/mohamedabotir/InventoryContext?style=for-the-badge)
+![GitHub Repo stars](https://img.shields.io/github/stars/mohamedabotir/InventoryContext?style=social)
+![example workflow](https://github.com/mohamedabotir/InventoryContext/actions/workflows/dotnet.yml/badge.svg) 
+![Coverage](https://img.shields.io/badge/coverage-0%25-brightgreen)
+---
 This document outlines the design and implementation details of the **Inventory Service** using **Domain-Driven Design (DDD)**, **GraphQL**, **Kafka**, and **MongoDB** for recording events and **Sql server** all above services  used from docker as development evnironment was linux and ide rider
 
 ---
