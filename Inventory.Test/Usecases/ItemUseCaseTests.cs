@@ -8,7 +8,7 @@ using Common.ValueObject;
 using Domain.Entities;
 using Domain.Repository;
 using Moq;
-
+namespace Inventory.Test.Usecases;
 [TestFixture]
 public class ItemUseCaseTests
 {
