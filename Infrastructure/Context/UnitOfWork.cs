@@ -2,17 +2,39 @@ using Common.Entity;
 using Common.Events;
 using Common.Handlers;
 using Common.Repository;
+using Domain.Entities;
+using Infrastructure.Utils;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Context;
 
-public class UnitOfWork(ItemContext dbContext, IServiceProvider serviceProvider) : IUnitOfWork
+public class UnitOfWork(ItemContext dbContext, IServiceProvider serviceProvider,IHttpContextAccessor httpContextAccessor, IEventSourcing<Item> eventSourcing) : IUnitOfWork<Item>
 {
-    public async Task<int> SaveChangesAsync(IEnumerable<DomainEventBase> events,CancellationToken cancellationToken = default)
+    public async Task<int> SaveChangesAsync(Item aggregate, CancellationToken cancellationToken = default)
     {
-     
-        var result = await dbContext.SaveChangesAsync(cancellationToken);
-        return result;
+
+        await using var transaction = await dbContext.Database.BeginTransactionAsync(cancellationToken);
+        var correlationId = string.Empty;
+
+        try
+        {
+            correlationId = httpContextAccessor.HttpContext!.GetCorrelationId();
+            var result = await dbContext.SaveChangesAsync(cancellationToken);
+
+            await eventSourcing.SaveAsync(aggregate);
+
+            await transaction.CommitAsync(cancellationToken);
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            await transaction.RollbackAsync(cancellationToken);
+            var exceptionMessage =
+                $"An error occured while Process Request please use this correlation id and contact help desk team {correlationId}";
+            throw new InvalidOperationException(exceptionMessage, ex);
+        }
     }
 
 

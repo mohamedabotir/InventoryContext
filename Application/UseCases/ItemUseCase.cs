@@ -9,7 +9,7 @@ using Domain.ValueObject;
 
 namespace Application.UseCases;
 
-public class ItemUseCase(IItemRepository itemRepository,IUnitOfWork unitOfWork): IItemUseCase
+public class ItemUseCase(IItemRepository itemRepository,IUnitOfWork<Item> unitOfWork): IItemUseCase
 {
     public async Task<Result> Create(CreateItemCommand item)
     {
@@ -27,7 +27,7 @@ public class ItemUseCase(IItemRepository itemRepository,IUnitOfWork unitOfWork):
             }
             var createdItem = new Item(item.Guid,DateTime.UtcNow,null,0,name.Value, description.Value, price.Value, sku,stocks);
            await itemRepository.AddAsync(createdItem);
-           await unitOfWork.SaveChangesAsync(createdItem.DomainEvents);
+           await unitOfWork.SaveChangesAsync(createdItem);
             return Result.Ok();
         }
     }

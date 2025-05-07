@@ -6,6 +6,7 @@ using Common.Events;
 using Common.Repository;
 using Common.Result;
 using Confluent.Kafka;
+using Domain.Entities;
 using Domain.Repository;
 using GraphQL;
 using GraphQL.Server.Ui.Playground;
@@ -24,7 +25,7 @@ using Microsoft.EntityFrameworkCore;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
-using EventHandler = Infrastructure.Consumer.EventHandler;
+using EventHandler = Application.Handlers.EventHandler;
 
 var builder = WebApplication.CreateBuilder(args);
 Action<DbContextOptionsBuilder> dbContextConfiguration = (e => e.UseSqlServer(builder.Configuration.GetConnectionString("Inventory")));
@@ -44,9 +45,9 @@ BsonClassMap.RegisterClassMap<OrderShipped>();
 
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddTransient<IItemRepository , ItemRepository>();
-builder.Services.AddTransient<IEventRepository , EventRepository>();
+builder.Services.AddTransient<Domain.Repository.IEventRepository , EventRepository>();
 builder.Services.AddTransient<IItemUseCase,ItemUseCase>();
-builder.Services.AddTransient<IUnitOfWork,UnitOfWork>();
+builder.Services.AddTransient<IUnitOfWork<Item>,UnitOfWork>();
 // GraphQL
 builder.Services.AddTransient<ItemQuery>();
 builder.Services.AddTransient<ItemType>();
@@ -56,16 +57,15 @@ builder.Services.AddGraphQL(b => b
     .AddAutoSchema<ItemQuery>()  
     .AddSystemTextJson()
     .AddDataLoader());
-builder.Services.AddScoped<IEventHandler,EventHandler>();
+builder.Services.AddScoped<Application.Handlers.IEventHandler,EventHandler>();
 builder.Services.AddScoped<IEventConsumer<EventConsumer>, EventConsumer>();
 builder.Services.AddScoped<IRequestHandler<CreateItemCommand, Result>, CreateItemHandler>();
-builder.Services.AddScoped<IEventStore,InventoryEventStore>();
 builder.Services.AddScoped<IProducer,Producer>();
 
 builder.Services.AddHostedService<ConsumerHostingService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -75,7 +75,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseMiddleware<CorrelationMiddleware>();
+app.UseMiddleware<RequestLoggingMiddleware>();
+app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 app.UseGraphQL<ISchema>("/graphql");
 app.UseGraphQLPlayground("/graphql-ui" , new PlaygroundOptions()
 {
