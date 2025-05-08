@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Inventory.Database.publish.xml" />
+    <None Include="Inventory.Database-Production.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Postdeployment\Population.PostDeployment1.sql" />
