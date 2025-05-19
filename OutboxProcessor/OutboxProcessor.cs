@@ -1,6 +1,5 @@
 ﻿using Common.Events;
 using Common.Repository;
-using Infrastructure.Consumer;
 using Infrastructure.MessageBroker;
 using Infrastructure.MessageBroker.Producers;
 using Microsoft.Extensions.Options;
@@ -12,16 +11,21 @@ public class OutboxProcessor
 {
     private readonly IEventRepository _eventRepo;
     private readonly IProducer _producer;
-    private readonly string _topic;
-    private readonly AsyncRetryPolicy _retryPolicy;
+    private readonly string _defaultTopic;
     private readonly EventTopicMapping _topicMapping;
+    private readonly AsyncRetryPolicy _retryPolicy;
 
-    public OutboxProcessor(IEventRepository eventRepo, IProducer producer, IOptions<InventoryTopic> options, IOptions<EventTopicMapping> eventTopicMapping)
+    public OutboxProcessor(
+        IEventRepository eventRepo,
+        IProducer producer,
+        IOptions<InventoryTopic> options,
+        IOptions<EventTopicMapping> eventTopicMapping)
     {
         _eventRepo = eventRepo;
         _producer = producer;
-        _topic = options.Value.TopicName;
+        _defaultTopic = options.Value.TopicName;
         _topicMapping = eventTopicMapping.Value;
+
         _retryPolicy = Policy
             .Handle<Exception>()
             .WaitAndRetryAsync(
@@ -29,7 +33,7 @@ public class OutboxProcessor
                 sleepDurationProvider: attempt => TimeSpan.FromSeconds(Math.Pow(2, attempt)),
                 onRetry: (exception, timeSpan, retryCount, context) =>
                 {
-                    Log.Information($"🔁 Retry {retryCount} after {timeSpan.TotalSeconds}s due to: {exception.Message}");
+                    Log.Warning($"Retry {retryCount} for event {context["EventId"]} after {timeSpan.TotalSeconds}s due to: {exception.Message}");
                 });
     }
 
@@ -41,28 +45,36 @@ public class OutboxProcessor
 
             foreach (var evt in unprocessed)
             {
+                var context = new Context();
+                context["EventId"] = evt.Id.ToString();
+
                 try
                 {
-                    var topics = GetTopicsForEvent(evt.EventBaseData);
-                    foreach (var topic in topics)
+                    await _retryPolicy.ExecuteAsync(async ctx =>
                     {
-                        await _producer.ProduceAsync(topic, evt.EventBaseData);
-                    }
+                        var topics = GetTopicsForEvent(evt.EventBaseData);
 
-                    await _eventRepo.MarkAsProcessed(evt.Id);
+                        foreach (var topic in topics)
+                        {
+                            await _producer.ProduceAsync(topic, evt.EventBaseData);
+                        }
+
+                        await _eventRepo.MarkAsProcessed(evt.Id);
+
+                    }, context);
                 }
                 catch (Exception ex)
                 {
-                    Log.Error($"❌ Failed to process event {evt.Id}: {ex.Message}");
+                    Log.Error($"Failed to process event {evt.Id} after 3 retries: {ex.Message}");
                 }
             }
         }
         catch (Exception ex)
         {
-            Log.Error($"❌ Failed to process events: {ex.Message}");
+            Log.Fatal($"Critical failure in outbox processor: {ex.Message}");
         }
 
-        Log.Information("✅ Finished processing outbox events.");
+        Log.Information("Finished processing outbox events.");
     }
 
     private List<string> GetTopicsForEvent(DomainEventBase domainEvent)
@@ -70,7 +82,7 @@ public class OutboxProcessor
         var eventType = domainEvent.GetType().Name;
         return _topicMapping.TopicMappings.TryGetValue(eventType, out var topics)
             ? topics
-            : new List<string> { _topic };
+            : new List<string> { _defaultTopic };
     }
-
 }
+
